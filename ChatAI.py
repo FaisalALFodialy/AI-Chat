@@ -22,15 +22,15 @@ footer { visibility: hidden; }
 }
 
 .chat-message.user {
-    background-color: #0cdc0cd6 ;
-    color: black ;
+    background-color: white !importent ;
+    color: black !importent;
     border-radius: 0.8rem;
     padding: 0.5rem;
 }
 
 .chat-message.assistant {
-    background-color: white ;
-    color: black ;
+    background-color: white !importent ;
+    color: black !importent ;
     border-radius: 0.8rem;
     padding: 0.5rem;
 }
