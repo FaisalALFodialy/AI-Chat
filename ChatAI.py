@@ -10,7 +10,6 @@ st.markdown("""
 html, body, [data-testid="stAppViewContainer"] {
     height: 100vh;
     width: 100vw;
-    background-color: #f2f4f8;
 }
 
 header { visibility: hidden; }
