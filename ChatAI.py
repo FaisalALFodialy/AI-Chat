@@ -1,8 +1,5 @@
 import streamlit as st
 import requests
-from streamlit_webrtc import webrtc_streamer, AudioProcessorBase
-import av
-import numpy as np
 
 # --- PAGE CONFIG ---
 st.set_page_config(page_title="Barn's Coffee AI Chat", page_icon="☕", layout="wide")
@@ -57,30 +54,6 @@ if "messages" not in st.session_state:
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
-
-class AudioProcessor(AudioProcessorBase):
-    def __init__(self):
-        self.recorded_frames = []
-
-    def recv(self, frame: av.AudioFrame) -> av.AudioFrame:
-        self.recorded_frames.append(frame)
-        return frame
-
-st.markdown("### 🎤 Voice Recording")
-
-webrtc_ctx = webrtc_streamer(
-    key="voice",
-    mode="sendrecv",
-    audio_receiver_size=256,
-    media_stream_constraints={"audio": True, "video": False},
-    rtc_configuration={ "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}] },
-    audio_processor_factory=AudioProcessor,
-)
-
-if webrtc_ctx and webrtc_ctx.state.playing:
-    st.info("Recording... Stop when done and the audio will process automatically.")
-
-# You can expand this to convert audio frames to wav and transcribe using Whisper or Google STT.
 
 # --- CHAT INPUT ---
 if prompt := st.chat_input("Type your message..."):
