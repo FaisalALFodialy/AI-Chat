@@ -54,6 +54,57 @@ if "messages" not in st.session_state:
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
+from streamlit_audio_recorder import audio_recorder
+import io
+import base64
+import speech_recognition as sr
+
+# --- Voice Recording ---
+st.markdown("### 🎤 Or record your message:")
+
+audio_bytes = audio_recorder(text="Click to record", recording_color="#0cdc0cd6", neutral_color="#6b4f2d", icon_name="microphone")
+
+if audio_bytes:
+    # Convert audio to wav file-like object
+    audio_file = io.BytesIO(audio_bytes)
+
+    # Use SpeechRecognition to transcribe
+    recognizer = sr.Recognizer()
+    with sr.AudioFile(audio_file) as source:
+        audio_data = recognizer.record(source)
+        try:
+            prompt = recognizer.recognize_google(audio_data)
+            st.success(f"Recognized: {prompt}")
+
+            # Append user message to session state
+            st.session_state.messages.append({"role": "user", "content": prompt})
+            with st.chat_message("user"):
+                st.markdown(prompt)
+
+            # Send to n8n webhook
+            payload = {"chatInput": prompt}
+            with st.spinner("Barn's AI is preparing your coffee..."):
+                try:
+                    response = requests.post(
+                        "https://faisal442101210.app.n8n.cloud/webhook/5e0a08b1-b0d4-41e8-be5c-96f93b5df20f/chat",
+                        json=payload,
+                        timeout=60
+                    )
+                    if response.status_code == 200:
+                        ai_reply = response.json().get("output", "⚠️ AI did not return a reply.")
+                    else:
+                        ai_reply = f"⚠️ Error from backend (status {response.status_code})."
+                except Exception as e:
+                    ai_reply = f"⚠️ Exception: {e}"
+
+            st.session_state.messages.append({"role": "assistant", "content": ai_reply})
+            with st.chat_message("assistant"):
+                st.markdown(ai_reply)
+
+        except sr.UnknownValueError:
+            st.error("Sorry, could not understand the audio.")
+        except sr.RequestError as e:
+            st.error(f"Could not request results from Google Speech Recognition service; {e}")
 
 # --- CHAT INPUT ---
 if prompt := st.chat_input("Type your message..."):
