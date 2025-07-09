@@ -46,7 +46,7 @@ Experience your personalized coffee assistant. 🌿
 # --- SESSION STATE FOR CHAT HISTORY ---
 if "messages" not in st.session_state:
     st.session_state.messages = [
-        {"role": "assistant", "content": "Welcome to Barn’s! 🌿 Would you like coffee today or prefer something sweet? is you want to have personal coffee test write "quiz"}
+        {"role": "assistant", "content": "Welcome to Barn’s! 🌿 Would you like coffee today or prefer something sweet? is you want to have personal coffee test write "quiz""}
     ]
 
 # --- DISPLAY CHAT HISTORY ---
