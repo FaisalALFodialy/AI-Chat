@@ -23,14 +23,14 @@ footer { visibility: hidden; }
 
 .chat-message.user {
     background-color: #0cdc0cd6 ;
-    color: white ;
+    color: black ;
     border-radius: 0.8rem;
     padding: 0.5rem;
 }
 
 .chat-message.assistant {
     background-color: white ;
-    color: #105e10 ;
+    color: black ;
     border-radius: 0.8rem;
     padding: 0.5rem;
 }
