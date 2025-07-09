@@ -37,7 +37,7 @@ footer { visibility: hidden; }
 """, unsafe_allow_html=True)
 
 # --- LOGO AND WELCOME HEADER ---
-#st.image("Barn's.png", width=150)
+st.image("Barn's.png", width=150)
 st.markdown("""
 # Welcome to Barn's Coffee ☕
 Experience your personalized coffee assistant. 🌿
